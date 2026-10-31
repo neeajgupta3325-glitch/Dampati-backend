@@ -6,6 +6,9 @@ import org.dampati.backend.repository.UserRepository;
 import org.dampati.backend.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 @Service
@@ -26,12 +29,22 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Email already exists"
+            );
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public User updateUser(Long id, User updatedUser) {
@@ -64,8 +77,22 @@ public class UserService {
         }
         return null;
     }
+
+    @Transactional
     public void resetPassword(Long id, String newPassword) {
-        User user = userRepository.findById(id).orElse(null);
+                if (newPassword == null || newPassword.length() < 8){
+                    throw new org.springframework.web.server.ResponseStatusException(
+                            org.springframework.http.HttpStatus.BAD_REQUEST,
+                            "Password must contain at least 8 characters"
+                    );
+                }
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new org.springframework.web.server.ResponseStatusException(
+                                org.springframework.http.HttpStatus.NOT_FOUND,
+                                "User not found"
+                        )
+                );
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
     }

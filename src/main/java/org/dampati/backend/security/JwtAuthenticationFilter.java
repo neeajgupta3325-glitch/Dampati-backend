@@ -23,10 +23,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
+
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
         String authHeader = request.getHeader("Authorization");
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -35,29 +37,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String token = authHeader.substring(7);
-        boolean valid = jwtService.isTokenValid(token);
-//        System.out.println("JWT VALID: " + jwtService.isTokenValid(token));
-        System.out.println("JWT TOKEN RECEIVED: " + !token.isEmpty());
-        System.out.println("JWT VALID:" +valid);
 
-        if(valid) {
-            String email = jwtService.extractEmail(token);
-            System.out.println("JWT EMAIL: " +email);
+        try {
+            if (jwtService.isTokenValid(token)) {
+                String email = jwtService.extractEmail(token);
+
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                email,
+                                null,
+                                java.util.Collections.emptyList()
+                        );
+
+                SecurityContextHolder.getContext()
+                        .setAuthentication(authentication);
+            }
+        } catch (Exception e) {
+            SecurityContextHolder.clearContext();
         }
-        if(jwtService.isTokenValid(token)) {
-            String email = jwtService.extractEmail(token);
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            email,
-                            null,
-//                            null
-                            java.util.Collections.emptyList()
-                    );
-
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-
-
         filterChain.doFilter(request, response);
     }
 }

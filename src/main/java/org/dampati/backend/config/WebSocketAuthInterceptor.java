@@ -1,7 +1,6 @@
 
 package org.dampati.backend.config;
 
-import org.dampati.backend.entity.User;
 import org.dampati.backend.repository.UserRepository;
 import org.dampati.backend.security.JwtService;
 import org.springframework.messaging.Message;
@@ -57,7 +56,7 @@ public class WebSocketAuthInterceptor implements ChannelInterceptor {
 
             String email = jwtService.extractEmail(token);
 
-            User user = userRepository.findByEmail(email)
+            userRepository.findByEmail(email)
                     .orElseThrow(() ->
                             new IllegalArgumentException("User not found"));
 

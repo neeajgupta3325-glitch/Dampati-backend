@@ -1,6 +1,5 @@
 package org.dampati.backend.controller;
 
-import org.dampati.backend.entity.Interest;
 import org.dampati.backend.service.InterestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

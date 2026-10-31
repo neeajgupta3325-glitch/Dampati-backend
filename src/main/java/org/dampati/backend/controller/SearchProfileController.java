@@ -1,7 +1,6 @@
 package org.dampati.backend.controller;
 
 import org.dampati.backend.dto.SearchProfileDTO;
-import org.dampati.backend.entity.User;
 import org.dampati.backend.service.SearchProfileService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

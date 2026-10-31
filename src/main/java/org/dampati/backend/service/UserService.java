@@ -3,7 +3,6 @@ package org.dampati.backend.service;
 import org.dampati.backend.entity.User;
 
 import org.dampati.backend.repository.UserRepository;
-import org.dampati.backend.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
@@ -15,16 +14,13 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(
             UserRepository userRepository,
-            JwtService jwtService,
             PasswordEncoder passwordEncoder) {
 
         this.userRepository = userRepository;
-        this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
     }
 

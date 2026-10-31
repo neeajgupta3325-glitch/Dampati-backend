@@ -5,7 +5,6 @@ import org.dampati.backend.entity.User;
 import org.dampati.backend.repository.PartnerPreferenceRepository;
 import org.dampati.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.dampati.backend.entity.User;
 
 import java.util.Optional;
 @Service

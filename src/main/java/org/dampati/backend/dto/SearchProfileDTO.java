@@ -15,7 +15,7 @@ public class SearchProfileDTO {
             Long id,
             String name,
             String gender,
-            String dataOfBirth,
+            String dateOfBirth,
             String religion,
             String motherTongue,
             String location,

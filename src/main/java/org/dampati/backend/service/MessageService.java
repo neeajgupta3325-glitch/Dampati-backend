@@ -80,7 +80,7 @@ public class MessageService {
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.UNAUTHORIZED, "User not found"));
 
-        User receiver = userRepository.findById(receiverId)
+       userRepository.findById(receiverId)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND, "Receiver not found"));
 
